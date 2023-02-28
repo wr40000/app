@@ -1,14 +1,13 @@
 <template>
-  <div>我是搜索
+  <div>
+    <div>params参数：{{ this.$route.params.keyword }}</div>
+    <div>query参数：{{ this.$route.query.k }}</div>
   </div>
 </template>
 
 <script>
-export default {
-
-}
+export default {};
 </script>
 
 <style>
-
 </style>

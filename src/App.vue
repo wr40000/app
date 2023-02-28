@@ -3,7 +3,7 @@
     <Header></Header>
     <router-view></router-view>
     <!--Home和Search显示，Login和Register不显示-->
-    <Footer ></Footer>
+    <Footer v-show="$route.meta.show"></Footer>
   </div>
 </template>
 
