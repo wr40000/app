@@ -1,7 +1,9 @@
 <template>
   <div>
     <Header></Header>
-    <Footer></Footer>
+    <router-view></router-view>
+    <!--Home和Search显示，Login和Register不显示-->
+    <Footer ></Footer>
   </div>
 </template>
 
