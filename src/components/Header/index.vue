@@ -50,7 +50,7 @@
 <script>
 export default {
     name:"Header",
-    data(){
+    data(){ 
     return {
       keyword:""
     }
@@ -62,9 +62,16 @@ export default {
         // "?k=" + this.keyword.toUpperCase())
         //(2)模板字符串 路由传参  ``用Tab上面的键打出来
         // this.$router.push(`search/${this.keyword}?k=${this.keyword.toUpperCase()}`)
+        //面试题：：：解决对于params参数可传可不传时路径异常（search路径丢失）的问题，
+        // this.$router.push({name:"search",params:{keyword:"" || undefined},query:{k:this.keyword.toUpperCase()}})
+        //面试题------params不可以和path一起使用
+        // this.$router.push({path:'/search',params:{keyword:this.keyword},
+                                        // query:{k:this.keyword.toUpperCase()}})
+        //路由可不以传递props参数--------可以，但是只可以传递props参数
         //(3)对象传参------常用
-        this.$router.push({name:"search",params:{keyword:this.keyword},
-                                        query:{k:this.keyword.toUpperCase()}})
+        // this.$router.push({name:"search",params:{keyword:this.keyword},
+                                        // query:{k:this.keyword.toUpperCase()}})
+
       }
     }
 };
