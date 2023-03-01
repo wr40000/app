@@ -69,8 +69,8 @@ export default {
                                         // query:{k:this.keyword.toUpperCase()}})
         //路由可不以传递props参数--------可以，但是只可以传递props参数
         //(3)对象传参------常用
-        // this.$router.push({name:"search",params:{keyword:this.keyword},
-                                        // query:{k:this.keyword.toUpperCase()}})
+        this.$router.push({name:"search",params:{keyword:this.keyword},
+                                        query:{k:this.keyword.toUpperCase()}})
 
       }
     }
