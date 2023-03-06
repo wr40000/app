@@ -16,7 +16,7 @@
                 <a
                   href="javascript:"
                   :data-categoryName="c1.categoryName"
-                  :data-category1Id="c1.category1Id"
+                  :data-category1Id="c1.categoryId"
                   >{{ c1.categoryName }}</a
                 >
                 <!-- 为每一个a标签绑定godearch同样也很麻烦 -->
@@ -38,7 +38,7 @@
                       <a
                         href="javascript:"
                         :data-categoryName="c2.categoryName"
-                        :data-category2Id="c2.category2Id"
+                        :data-category2Id="c2.categoryId"
                         >{{ c2.categoryName }}</a
                       >
                       <!-- <router-link to="/search">{{ c2.categoryName }}</router-link> -->
@@ -51,7 +51,7 @@
                         <a
                           href="javascript:"
                           :data-categoryName="c3.categoryName"
-                          :data-category3Id="c3.category3Id"
+                          :data-category3Id="c3.categoryId"
                           >{{ c3.categoryName }}</a
                         >
                         <!-- <router-link to="/search">{{ c3.categoryName }}</router-link> -->
@@ -116,7 +116,7 @@ export default {
     goSearch(event) {
       const { categoryname, category1id, category2id, category3id } =
         event.target.dataset;
-      console.log(event.target.dataset);
+      // console.log(event.target.dataset);
       // console.log(categoryname);
 
       if (categoryname) {
@@ -124,7 +124,6 @@ export default {
         var location = { name: "search" };
         var query = { categoryName: categoryname };
       }
-
       if (category1id) {
         console.log(category1id);
         query.category1Id = category1id;
@@ -135,6 +134,7 @@ export default {
       }
 
       location.query = query;
+      console.log(location)
       this.$router.push(location);
     },
   },
