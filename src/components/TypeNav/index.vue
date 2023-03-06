@@ -1,7 +1,45 @@
 <template>
   <div class="type-nav">
     <div class="container">
-      <h2 class="all">全部商品分类</h2>
+      <div @mouseleave="leaveIndex()">
+        <h2 class="all">全部商品分类</h2>
+        <div class="sort">
+          <div class="all-sort-list2">
+            <!-- 添加可以根据currentIndex的值，而决定元素是否有.cur这个属性   :class="{cur:currentIndex==index}" -->
+            <div
+              class="item"
+              v-for="(c1, index) in categoryList"
+              :key="c1.categoryId"
+              :class="{ cur: currentIndex == index }"
+            >
+              <h3 @mouseenter="changeIndex(index)" >
+                <a href="">{{ c1.categoryName }}</a>
+              </h3>
+              <div class="item-list clearfix">
+                <div
+                  class="subitem"
+                  v-for="(c2, index) in c1.categoryChild"
+                  :key="c2.categoryId"
+                >
+                  <dl class="fore">
+                    <dt>
+                      <a href="">{{ c2.categoryName }}</a>
+                    </dt>
+                    <dd>
+                      <em
+                        v-for="(c3, index) in c2.categoryChild"
+                        :key="c3.categoryId"
+                      >
+                        <a href="">{{ c3.categoryName }}</a>
+                      </em>
+                    </dd>
+                  </dl>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <nav class="nav">
         <a href="###">服装城</a>
         <a href="###">美妆馆</a>
@@ -12,67 +50,41 @@
         <a href="###">有趣</a>
         <a href="###">秒杀</a>
       </nav>
-      <div class="sort">
-        <div class="all-sort-list2">
-          <!-- 添加可以根据currentIndex的值，而决定元素是否有.cur这个属性   :class="{cur:currentIndex==index}" -->
-          <div class="item" v-for="(c1, index) in categoryList" :key="c1.categoryId"
-            :class="{cur:currentIndex==index}">
-            <h3 @mouseenter = "changeIndex(index)" 
-                @mouseleave="leaveIndex()">              
-              <a href="">{{ c1.categoryName }}</a>
-            </h3>
-            <div class="item-list clearfix">
-              <div class="subitem" v-for="(c2,index) in c1.categoryChild" :key="c2.categoryId">
-                <dl class="fore">
-                  <dt>
-                    <a href="">{{c2.categoryName}}</a>
-                  </dt>
-                  <dd>
-                    <em v-for="(c3,index) in c2.categoryChild" :key="c3.categoryId">
-                      <a href="">{{ c3.categoryName }}</a>
-                    </em>
-                  </dd>
-                </dl>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </template>
 
 <script>
 //计算属性简写
-import {mapState} from 'vuex';
+import { mapState } from "vuex";
 export default {
   name: "TypeNav",
-  data(){
+  data() {
     return {
-      currentIndex:-1,
-    }
+      currentIndex: -1,
+    };
   },
-  mounted(){
-    this.$store.dispatch('categoryList');
+  mounted() {
+    this.$store.dispatch("categoryList");
     // console.log(this.$store);
   },
-  computed:{
+  computed: {
     ...mapState({
-      categoryList:(state)=>{
+      categoryList: (state) => {
         // console.log(state.home.categoryList);
         return state.home.categoryList;
-      }
-    })
+      },
+    }),
   },
-  methods:{
-    changeIndex(index){
+  methods: {
+    changeIndex(index) {
       console.log(index);
       this.currentIndex = index;
     },
-    leaveIndex(){
+    leaveIndex() {
       this.currentIndex = 100;
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -192,7 +204,7 @@ export default {
             }
           }
         }
-        .cur{
+        .cur {
           background-color: skyblue;
         }
       }
