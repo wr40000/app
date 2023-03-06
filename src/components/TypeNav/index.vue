@@ -4,18 +4,30 @@
       <div @mouseleave="leaveIndex()">
         <h2 class="all">全部商品分类</h2>
         <div class="sort">
-          <div class="all-sort-list2">
+          <div class="all-sort-list2" @click="goSearch">
             <!-- 添加可以根据currentIndex的值，而决定元素是否有.cur这个属性   :class="{cur:currentIndex==index}" -->
             <div
               class="item"
-              v-for="(c1, index) in categoryList"
+              v-for="(c1, index) in categoryList.slice(0, 16)"
               :key="c1.categoryId"
               :class="{ cur: currentIndex == index }"
             >
-              <h3 @mouseenter="changeIndex(index)" >
-                <a href="">{{ c1.categoryName }}</a>
+              <h3 @mouseenter="changeIndex(index)">
+                <a
+                  href="javascript:"
+                  :data-categoryName="c1.categoryName"
+                  :data-category1Id="c1.category1Id"
+                  >{{ c1.categoryName }}</a
+                >
+                <!-- 为每一个a标签绑定godearch同样也很麻烦 -->
+                <!-- <a @click="gosearch">{{ c1.categoryName }}</a> -->
+                <!-- router-link太消耗内存，不建议使用
+                <router-link to="/search">{{ c1.categoryName }}</router-link> -->
               </h3>
-              <div class="item-list clearfix">
+              <div
+                class="item-list clearfix"
+                :style="{ display: currentIndex == index ? 'block' : 'none' }"
+              >
                 <div
                   class="subitem"
                   v-for="(c2, index) in c1.categoryChild"
@@ -23,14 +35,26 @@
                 >
                   <dl class="fore">
                     <dt>
-                      <a href="">{{ c2.categoryName }}</a>
+                      <a
+                        href="javascript:"
+                        :data-categoryName="c2.categoryName"
+                        :data-category2Id="c2.category2Id"
+                        >{{ c2.categoryName }}</a
+                      >
+                      <!-- <router-link to="/search">{{ c2.categoryName }}</router-link> -->
                     </dt>
                     <dd>
                       <em
                         v-for="(c3, index) in c2.categoryChild"
                         :key="c3.categoryId"
                       >
-                        <a href="">{{ c3.categoryName }}</a>
+                        <a
+                          href="javascript:"
+                          :data-categoryName="c3.categoryName"
+                          :data-category3Id="c3.category3Id"
+                          >{{ c3.categoryName }}</a
+                        >
+                        <!-- <router-link to="/search">{{ c3.categoryName }}</router-link> -->
                       </em>
                     </dd>
                   </dl>
@@ -57,6 +81,8 @@
 <script>
 //计算属性简写
 import { mapState } from "vuex";
+//按需引入  因为是默认暴露，所以不予要加上{throttle}
+import throttle from "lodash";
 export default {
   name: "TypeNav",
   data() {
@@ -77,12 +103,39 @@ export default {
     }),
   },
   methods: {
-    changeIndex(index) {
-      console.log(index);
+    // changeIndex(index) {
+    //   console.log(index);
+    //   this.currentIndex = index;
+    // },
+    changeIndex: _.throttle(function (index) {
       this.currentIndex = index;
-    },
+    }, 50),
     leaveIndex() {
       this.currentIndex = 100;
+    },
+    goSearch(event) {
+      const { categoryname, category1id, category2id, category3id } =
+        event.target.dataset;
+      console.log(event.target.dataset);
+      // console.log(categoryname);
+
+      if (categoryname) {
+        console.log(categoryname);
+        var location = { name: "search" };
+        var query = { categoryName: categoryname };
+      }
+
+      if (category1id) {
+        console.log(category1id);
+        query.category1Id = category1id;
+      } else if (category2id) {
+        query.category2Id = category2id;
+      } else if (category3id) {
+        query.category3Id = category3id;
+      }
+
+      location.query = query;
+      this.$router.push(location);
     },
   },
 };
@@ -197,12 +250,12 @@ export default {
               }
             }
           }
-
-          &:hover {
-            .item-list {
-              display: block;
-            }
-          }
+          //css完成二三级菜单显示和隐藏
+          // &:hover {
+          //   .item-list {
+          //     display: block;
+          //   }
+          // }
         }
         .cur {
           background-color: skyblue;
