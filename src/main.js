@@ -7,6 +7,9 @@ Vue.component(TypeNav.name,TypeNav)
 
 Vue.config.productionTip = false
 
+import {reqCategoryList} from '@/api';
+reqCategoryList();
+
 import router from '@/router';
 new Vue({
   render: h => h(App),
