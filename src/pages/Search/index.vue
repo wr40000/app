@@ -1,12 +1,12 @@
 <template>
   <div>
-    <div>params参数：{{ this.$route.params.keyword }}</div>
-    <div>query参数：{{ this.$route.query.k }}</div>
-    <div>props-----params:{{ this.keyword }}  k:{{ k }}</div>
+    <typeNav/>
   </div>
 </template>
 
 <script>
+//因为TypeNav已近是全局组件，所以不需要引入
+// import TypeNav from 'src\components\TypeNav\index.vue';
 export default {
   props:['keyword','k']
 };

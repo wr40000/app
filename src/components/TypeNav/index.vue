@@ -1,68 +1,70 @@
 <template>
   <div class="type-nav">
     <div class="container">
-      <div @mouseleave="leaveIndex()">
+      <div @mouseleave="leaveShow()" @mouseenter="enterShow">
         <h2 class="all">全部商品分类</h2>
-        <div class="sort">
-          <div class="all-sort-list2" @click="goSearch">
-            <!-- 添加可以根据currentIndex的值，而决定元素是否有.cur这个属性   :class="{cur:currentIndex==index}" -->
-            <div
-              class="item"
-              v-for="(c1, index) in categoryList.slice(0, 16)"
-              :key="c1.categoryId"
-              :class="{ cur: currentIndex == index }"
-            >
-              <h3 @mouseenter="changeIndex(index)">
-                <a
-                  href="javascript:"
-                  :data-categoryName="c1.categoryName"
-                  :data-category1Id="c1.categoryId"
-                  >{{ c1.categoryName }}</a
-                >
-                <!-- 为每一个a标签绑定godearch同样也很麻烦 -->
-                <!-- <a @click="gosearch">{{ c1.categoryName }}</a> -->
-                <!-- router-link太消耗内存，不建议使用
-                <router-link to="/search">{{ c1.categoryName }}</router-link> -->
-              </h3>
+        <transition name="sort">
+          <div class="sort" v-show="show">
+            <div class="all-sort-list2" @click="goSearch">
+              <!-- 添加可以根据currentIndex的值，而决定元素是否有.cur这个属性   :class="{cur:currentIndex==index}" -->
               <div
-                class="item-list clearfix"
-                :style="{ display: currentIndex == index ? 'block' : 'none' }"
+                class="item"
+                v-for="(c1, index) in categoryList"
+                :key="c1.categoryId"
+                :class="{ cur: currentIndex == index }"
               >
+                <h3 @mouseenter="changeIndex(index)">
+                  <a
+                    href="javascript:"
+                    :data-categoryName="c1.categoryName"
+                    :data-category1Id="c1.categoryId"
+                    >{{ c1.categoryName }}</a
+                  >
+                  <!-- 为每一个a标签绑定godearch同样也很麻烦 -->
+                  <!-- <a @click="gosearch">{{ c1.categoryName }}</a> -->
+                  <!-- router-link太消耗内存，不建议使用
+                <router-link to="/search">{{ c1.categoryName }}</router-link> -->
+                </h3>
                 <div
-                  class="subitem"
-                  v-for="(c2, index) in c1.categoryChild"
-                  :key="c2.categoryId"
+                  class="item-list clearfix"
+                  :style="{ display: currentIndex == index ? 'block' : 'none' }"
                 >
-                  <dl class="fore">
-                    <dt>
-                      <a
-                        href="javascript:"
-                        :data-categoryName="c2.categoryName"
-                        :data-category2Id="c2.categoryId"
-                        >{{ c2.categoryName }}</a
-                      >
-                      <!-- <router-link to="/search">{{ c2.categoryName }}</router-link> -->
-                    </dt>
-                    <dd>
-                      <em
-                        v-for="(c3, index) in c2.categoryChild"
-                        :key="c3.categoryId"
-                      >
+                  <div
+                    class="subitem"
+                    v-for="(c2, index) in c1.categoryChild"
+                    :key="c2.categoryId"
+                  >
+                    <dl class="fore">
+                      <dt>
                         <a
                           href="javascript:"
-                          :data-categoryName="c3.categoryName"
-                          :data-category3Id="c3.categoryId"
-                          >{{ c3.categoryName }}</a
+                          :data-categoryName="c2.categoryName"
+                          :data-category2Id="c2.categoryId"
+                          >{{ c2.categoryName }}</a
                         >
-                        <!-- <router-link to="/search">{{ c3.categoryName }}</router-link> -->
-                      </em>
-                    </dd>
-                  </dl>
+                        <!-- <router-link to="/search">{{ c2.categoryName }}</router-link> -->
+                      </dt>
+                      <dd>
+                        <em
+                          v-for="(c3, index) in c2.categoryChild"
+                          :key="c3.categoryId"
+                        >
+                          <a
+                            href="javascript:"
+                            :data-categoryName="c3.categoryName"
+                            :data-category3Id="c3.categoryId"
+                            >{{ c3.categoryName }}</a
+                          >
+                          <!-- <router-link to="/search">{{ c3.categoryName }}</router-link> -->
+                        </em>
+                      </dd>
+                    </dl>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        </transition>
       </div>
       <nav class="nav">
         <a href="###">服装城</a>
@@ -88,16 +90,22 @@ export default {
   data() {
     return {
       currentIndex: -1,
+      show: true,
     };
   },
   mounted() {
-    this.$store.dispatch("categoryList");
+    // this.$store.dispatch("categoryList");
     // console.log(this.$store);
+    //实现TypeNav组件在search组件中隐藏
+    if (this.$route.path != "/home") {
+      this.show = false;
+    }
   },
   computed: {
     ...mapState({
       categoryList: (state) => {
         // console.log(state.home.categoryList);
+        // console.log(state);
         return state.home.categoryList;
       },
     }),
@@ -110,9 +118,6 @@ export default {
     changeIndex: _.throttle(function (index) {
       this.currentIndex = index;
     }, 50),
-    leaveIndex() {
-      this.currentIndex = 100;
-    },
     goSearch(event) {
       const { categoryname, category1id, category2id, category3id } =
         event.target.dataset;
@@ -120,22 +125,34 @@ export default {
       // console.log(categoryname);
 
       if (categoryname) {
-        console.log(categoryname);
+        // console.log(categoryname);
         var location = { name: "search" };
         var query = { categoryName: categoryname };
-      }
-      if (category1id) {
-        console.log(category1id);
-        query.category1Id = category1id;
-      } else if (category2id) {
-        query.category2Id = category2id;
-      } else if (category3id) {
-        query.category3Id = category3id;
+        if (category1id) {
+          // console.log(category1id);
+          query.category1Id = category1id;
+        } else if (category2id) {
+          query.category2Id = category2id;
+        } else if (category3id) {
+          query.category3Id = category3id;
+        }
       }
 
       location.query = query;
-      console.log(location)
+      // console.log(location)
       this.$router.push(location);
+    },
+    enterShow() {
+      if (this.$route.path != "/home") {
+        this.show = true;
+      }
+    },
+    leaveShow() {
+      this.currentIndex = 100;
+      //'/home'不要忘记加上/
+      if (this.$route.path != "/home") {
+        this.show = false;
+      }
     },
   },
 };
@@ -185,7 +202,7 @@ export default {
       .all-sort-list2 {
         .item {
           h3 {
-            line-height: 30px;
+            line-height: 27px;
             font-size: 14px;
             font-weight: 400;
             overflow: hidden;
@@ -261,6 +278,18 @@ export default {
           background-color: skyblue;
         }
       }
+    }
+    //过度动画样式
+    .sort-enter {
+      height: 0px;
+      opacity: 0.5;
+    }
+    .sort-enter-to {
+      height: 461px;
+      opacity: 1;
+    }
+    .sort-enter-active {
+      transition: all 0.5s linear;
     }
   }
 }
