@@ -136,11 +136,19 @@ export default {
         } else if (category3id) {
           query.category3Id = category3id;
         }
+      };
+      //判断是否有params参数，将query参数和params都push过去
+      if(this.$route.params){
+        location.params = this.$route.params;
       }
 
       location.query = query;
-      // console.log(location)
+      console.log(location)
       this.$router.push(location);
+      //解决点击空白报错的问题
+      // if(location.query != {} || location.params != {}){
+      //   this.$router.push(location);
+      // }
     },
     enterShow() {
       if (this.$route.path != "/home") {

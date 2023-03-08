@@ -9,6 +9,8 @@ Vue.config.productionTip = false
 
 import store from './store/index';
 
+//引入MockServer.js  ----mock数据
+import '@/mock/mockServer'
 //测试连接
 // import {reqCategoryList} from '@/api';
 // reqCategoryList();
