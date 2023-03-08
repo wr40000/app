@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import App from './App.vue'
-//注册三级联动--全局组件
+//注册三级联动--全局组件 在入口文件注册过后，在任何组件中都可以使用
 import TypeNav from '@/components/TypeNav'
 //第一个参数：全局组件名字，第二个参数：哪一个组件的
 Vue.component(TypeNav.name,TypeNav)
@@ -11,9 +11,8 @@ import store from './store/index';
 
 //引入MockServer.js  ----mock数据
 import '@/mock/mockServer'
-//测试连接
-// import {reqCategoryList} from '@/api';
-// reqCategoryList();
+ 
+import "swiper/css/swiper.css";
 
 import router from '@/router';
 new Vue({

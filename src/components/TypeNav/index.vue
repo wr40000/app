@@ -145,7 +145,7 @@ export default {
       location.query = query;
       console.log(location)
       this.$router.push(location);
-      //解决点击空白报错的问题
+      //解决点击空白报错的问题--失败
       // if(location.query != {} || location.params != {}){
       //   this.$router.push(location);
       // }

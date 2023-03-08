@@ -9,7 +9,7 @@
 swiper
 
 
-
+carousel：轮播图
 
 
 
