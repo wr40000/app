@@ -11,6 +11,21 @@ swiper
 
 carousel：轮播图
 
+<img :src="list.bigImg" />  “ ：”千万不要忘记加上了
+
+immediate:true,
+
+
+async 和await一定要在使用axios请求中注意
+
+import {mapState} from 'vuex'
+
+Object.assign(this.searchParams,this.$route.query,this.$route.params)
+
+computed:{
+      ...mapGetters(['trademarkList','attrsList'])
+    }
+
 
 
 

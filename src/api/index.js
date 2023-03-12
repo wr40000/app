@@ -16,3 +16,94 @@ export const reqBannersList = ()=>{
         method:'get'}
         );
     };
+
+export const reqFloorsList = ()=>{
+    return Mockrequests({
+        url:'/floors',
+        method:'get'}
+        );
+    };
+//params至少是一个对象
+export const reqGetSearchInfo = (params)=>{
+    // console.log(params);
+    return requests({
+        url:'/list',
+        method:'post',
+        data:params
+    }
+        );
+    };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

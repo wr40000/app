@@ -3,21 +3,7 @@
     <div class="sortList clearfix">
       <div class="center">
         <!--banner轮播-->
-        <div class="swiper-container" id="mySwiper">
-          <div class="swiper-wrapper">
-            <div class="swiper-slide" v-for="(carousel, index) in bannersList"
-              :key="carousel.id">
-              <!-- :src="carousel.imgUrl"不要忘记加上"：" -->
-              <img :src="carousel.imgUrl" />
-            </div>
-          </div>
-          <!-- 如果需要分页器 -->
-          <div class="swiper-pagination"></div>
-
-          <!-- 如果需要导航按钮 -->
-          <div class="swiper-button-prev"></div>
-          <div class="swiper-button-next"></div>
-        </div>
+        <Carousel :list="bannersList"/>
       </div>
       <div class="right">
         <div class="news">
@@ -94,54 +80,16 @@
 
 <script>
 import { mapState } from "vuex";
-import Swiper from "swiper";
 export default {
   name: "ListContainer",
   mounted() {
     this.$store.dispatch("getBannersList");
+  
   },
   computed: {
     ...mapState({
       bannersList: (state) => state.home.bannersList,
     }),
-  },
-  watch: {
-    //监听bannersList数据的变化，初始为空，
-    // 在创建swiper实例时，可以考虑在mounted里，但是要设置一个定时器，等待数据修改，或者在
-    // updata里创建，但是不推荐，浪费性能，因为异步的原因，在mounted里
-    // 不设置定时器会导致mutations阶段执行在创建实例后，但是swiper实例必须
-    // 在结构完整后才可以创建
-    // vm.$nextTick( [callback] )将回调延迟到下次 DOM 更新循环之后执行。
-    // 在修改数据之后立即使用它，然后等待 DOM 更新
-    bannersList: {
-      handler(newValue, oldValue) {
-        // this.$nextTick保证了v-for循环结束后才会创建Swiper实例
-        this.$nextTick(() => {
-          //这个函数只能保证有数据，不能保证v-for执行完毕
-          var mySwiper = new Swiper(".swiper", {
-            direction: "vertical", // 垂直切换选项
-            loop: true, // 循环模式选项
-
-            // 如果需要分页器
-            pagination: {
-              el: ".swiper-pagination",
-              clickable:true,
-            },
-
-            // 如果需要前进后退按钮
-            navigation: {
-              nextEl: ".swiper-button-next",
-              prevEl: ".swiper-button-prev",
-            },
-
-            // 如果需要滚动条
-            scrollbar: {
-              el: ".swiper-scrollbar",
-            },
-          });
-        });
-      },
-    },
   },
 };
 </script>

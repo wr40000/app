@@ -1,10 +1,11 @@
 //home的小仓库
-import { reqBannersList, reqCategoryList } from "@/api";
+import { reqBannersList,reqFloorsList, reqCategoryList } from "@/api";
 
 const state = {
     //默认值别瞎写,根据接口返回值初始化类型
     categoryList:[],
-    bannersList:[]
+    bannersList:[],
+    floorsList:[]
 };
 const mutations = {
     CATEGORYLIST(state,categoryList){
@@ -12,7 +13,10 @@ const mutations = {
     },
     GETBANNERSLIST(state,bannersList){
         state.bannersList = bannersList;
-    }
+    },
+    GETFLOORSLIST(state,floorsList){
+        state.floorsList = floorsList;
+    },
 };
 const actions = {
     async categoryList(commit){
@@ -33,6 +37,12 @@ const actions = {
         let result = await reqBannersList();
         if(result.code == 200){
             this.commit('GETBANNERSLIST',result.data);
+        }
+    },
+    async getFloorsList(commit){
+        let result = await reqFloorsList();
+        if(result.code == 200){
+            this.commit('GETFLOORSLIST',result.data);
         }
     },
 };
