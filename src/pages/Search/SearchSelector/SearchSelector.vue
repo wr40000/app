@@ -4,24 +4,9 @@
       <div class="fl key brand">品牌</div>
       <div class="value logos">
         <ul class="logo-list">
-          <li>索尼（SONY）</li>
-          <li>TCL</li>
-          <li>长虹（CHANGHONG）</li>
-          <li>飞利浦（PHILIPS）</li>
-          <li>风行电视</li>
-          <li><img src="./images/phone06.png" /></li>
-          <li><img src="./images/phone07.png" /></li>
-          <li><img src="./images/phone08.png" /></li>
-          <li><img src="./images/phone09.png" /></li>
-          <li><img src="./images/phone10.png" /></li>
-          <li><img src="./images/phone11.png" /></li>
-          <li><img src="./images/phone12.png" /></li>
-          <li><img src="./images/phone12.png" /></li>
-          <li><img src="./images/phone14.png" /></li>
-          <li><img src="./images/phone01.png" /></li>
-          <li><img src="./images/phone06.png" /></li>
-          <li><img src="./images/phone07.png" /></li>
-          <li><img src="./images/phone02.png" /></li>
+          <li v-for="(trademark,index) in trademarkList" :key="trademark.tmId" 
+            @click="trademarkHandler(trademark)">
+          {{trademark.tmName  }}</li>
         </ul>
       </div>
       <div class="ext">
@@ -33,7 +18,8 @@
       <div class="fl key">{{ attr.attrName }}</div>
       <div class="fl value">
         <ul class="type-list">
-          <li v-for="(attrvalue,index) in attr.attrValueList" :key="index">
+          <li v-for="(attrvalue,index) in attr.attrValueList" 
+            :key="index" @click="attrHandler(attr,attrvalue)">
             <a>{{ attrvalue}}</a>
           </li>
         </ul>
@@ -49,6 +35,16 @@ import {mapGetters} from 'vuex';
     name: 'SearchSelector',
     computed:{
       ...mapGetters(['trademarkList','attrsList'])
+    },
+    methods:{
+      //使用自定义事件传递trademark.tmName
+      trademarkHandler(trademark){
+        this.$emit('trademarkInfo',trademark)
+      },
+      //平台售卖属性值
+      attrHandler(attr,attrvalue){
+        this.$emit('attrInfo',attr,attrvalue)
+      }
     }
   }
 </script>

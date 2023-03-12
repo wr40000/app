@@ -1,83 +1,99 @@
 <template>
-    <div>
-      <header class="header">
-            <!-- 头部的第一行 -->
-            <div class="top">
-                <div class="container">
-                    <div class="loginList">
-                        <p>尚品汇欢迎您！</p>
-                        <p>
-                            <span>请</span>
-                            <router-link to="/login">登录</router-link>
-                            <router-link  class="register" to="/register">免费注册</router-link>
-                        </p>
-                    </div>
-                    <div class="typeList">
-                        <a href="###">我的订单</a>
-                        <a href="###">我的购物车</a>
-                        <a href="###">我的尚品汇</a>
-                        <a href="###">尚品汇会员</a>
-                        <a href="###">企业采购</a>
-                        <a href="###">关注尚品汇</a>
-                        <a href="###">合作招商</a>
-                        <a href="###">商家后台</a>
-                    </div>
-                </div>
-            </div>
-            <!--头部第二行 搜索区域-->
-            <div class="bottom">
-                <h1 class="logoArea">
-                    <router-link class="logo" to="/home">
-                        <img src="./images/logo.png" alt="">
-                    </router-link>
-                </h1>
-                <div class="searchArea">
-                    <form action="###" class="searchForm">
-                        <input type="text"
-                         id="autocomplete"
-                         class="input-error input-xxlarge" 
-                         v-model="keyword"/>
-                        <button class="sui-btn btn-xlarge btn-danger"
-                         type="button"
-                         @click="gosearch">搜索</button>
-                    </form>
-                </div>
-            </div>
-        </header>
-    </div>
+  <div>
+    <header class="header">
+      <!-- 头部的第一行 -->
+      <div class="top">
+        <div class="container">
+          <div class="loginList">
+            <p>尚品汇欢迎您！</p>
+            <p>
+              <span>请</span>
+              <router-link to="/login">登录</router-link>
+              <router-link class="register" to="/register"
+                >免费注册</router-link
+              >
+            </p>
+          </div>
+          <div class="typeList">
+            <a href="###">我的订单</a>
+            <a href="###">我的购物车</a>
+            <a href="###">我的尚品汇</a>
+            <a href="###">尚品汇会员</a>
+            <a href="###">企业采购</a>
+            <a href="###">关注尚品汇</a>
+            <a href="###">合作招商</a>
+            <a href="###">商家后台</a>
+          </div>
+        </div>
+      </div>
+      <!--头部第二行 搜索区域-->
+      <div class="bottom">
+        <h1 class="logoArea">
+          <router-link class="logo" to="/home">
+            <img src="./images/logo.png" alt="" />
+          </router-link>
+        </h1>
+        <div class="searchArea">
+          <form action="###" class="searchForm">
+            <input
+              type="text"
+              id="autocomplete"
+              class="input-error input-xxlarge"
+              v-model="keyword"
+            />
+            <button
+              class="sui-btn btn-xlarge btn-danger"
+              type="button"
+              @click="gosearch"
+            >
+              搜索
+            </button>
+          </form>
+        </div>
+      </div>
+    </header>
+  </div>
 </template>
 
 <script>
 export default {
-    name:"Header",
-    data(){ 
+  name: "Header",
+  data() {
     return {
-      keyword:""
-    }
+      keyword: "",
+    };
   },
-    methods: {
-      gosearch(){
-        //(1)路由传参   
-        // this.$router.push('/search/' + this.keyword +
-        // "?k=" + this.keyword.toUpperCase())
-        //(2)模板字符串 路由传参  ``用Tab上面的键打出来
-        // this.$router.push(`search/${this.keyword}?k=${this.keyword.toUpperCase()}`)
-        //面试题：：：解决对于params参数可传可不传时路径异常（search路径丢失）的问题，
-        // this.$router.push({name:"search",params:{keyword:"" || undefined},query:{k:this.keyword.toUpperCase()}})
-        //面试题------params不可以和path一起使用
-        // this.$router.push({path:'/search',params:{keyword:this.keyword},
-                                        // query:{k:this.keyword.toUpperCase()}})
-        //路由可不以传递props参数--------可以，但是只可以传递props参数
-        //(3)对象传参------常用
-        // this.$router.query即使没有也是个{}，可以执行if内的语句
-        if(this.$route.query){
-          //判断是否有query参数，将query参数和params都push过去
-          let location = {name:"search",params:{keyword:this.keyword || undefined}};
-          location.query = this.$route.query
-          this.$router.push(location);
-        }
+  mounted() {
+    this.$bus.$on('clearkeyword',()=>{
+      this.keyword = "";
+    })
+  },
+  methods: {
+    gosearch() {
+      //(1)路由传参
+      // this.$router.push('/search/' + this.keyword +
+      // "?k=" + this.keyword.toUpperCase())
+      //(2)模板字符串 路由传参  ``用Tab上面的键打出来
+      // this.$router.push(`search/${this.keyword}?k=${this.keyword.toUpperCase()}`)
+      //面试题：：：解决对于params参数可传可不传时路径异常（search路径丢失）的问题，
+      // this.$router.push({name:"search",params:{keyword:"" || undefined},query:{k:this.keyword.toUpperCase()}})
+      //面试题------params不可以和path一起使用
+      // this.$router.push({path:'/search',params:{keyword:this.keyword},
+      // query:{k:this.keyword.toUpperCase()}})
+      //路由可不以传递props参数--------可以，但是只可以传递props参数
+      //(3)对象传参------常用
+      // this.$router.query即使没有也是个{}，可以执行if内的语句
+      if (this.$route.query) {
+        //判断是否有query参数，将query参数和params都push过去
+        let location = {
+          name: "search",
+          params: { keyword: this.keyword || undefined },
+        };
+        location.query = this.$route.query;
+        this.$router.push(location);
       }
-    }
+    },
+  },
 };
 </script>
 

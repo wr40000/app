@@ -11,15 +11,25 @@
             </li>
           </ul>
           <ul class="fl sui-tag">
-            <li class="with-x">手机</li>
-            <li class="with-x">iphone<i>×</i></li>
-            <li class="with-x">华为<i>×</i></li>
-            <li class="with-x">OPPO<i>×</i></li>
+            <li class="with-x" v-if="searchParams.categoryName">
+              {{ searchParams.categoryName
+              }}<i @click="removeCategoryName">×</i>
+            </li>
+            <li class="with-x" v-if="searchParams.keyword">
+              {{ searchParams.keyword }}<i @click="removeKeyword">×</i>
+            </li>
+            <li class="with-x" v-if="searchParams.trademark">
+              {{ searchParams.trademark.split(":")[1]
+              }}<i @click="removetrademark">×</i>
+            </li>
+            <li class="with-x"  v-for="(props,index) in searchParams.props" :key="index">
+              {{ props.split(":")[1]}}<i @click="removeprops(index)">×</i>
+            </li>
           </ul>
         </div>
 
-        <!--selector-->
-        <SearchSelector />
+        <!--selector 自定义事件-->
+        <SearchSelector @trademarkInfo="trademarkInfo" @attrInfo="attrInfo" />
 
         <!--details-->
         <div class="details clearfix">
@@ -143,7 +153,7 @@ export default {
         order: "",
         pageNo: 1,
         pageSize: 10,
-        props: [""],
+        props: [],
         trademark: "",
       },
     };
@@ -157,7 +167,7 @@ export default {
     // this.searchParams.category3Id = this.$route.query.category3Id,
     // this.searchParams.categoryName = this.$route.query.categoryName,
     // this.searchParams.keyword = this.$route.params.keyword
-    Object.assign(this.searchParams,this.$route.query,this.$route.params)
+    Object.assign(this.searchParams, this.$route.query, this.$route.params);
   },
   mounted() {
     this.getdata();
@@ -166,20 +176,70 @@ export default {
     getdata() {
       this.$store.dispatch("getSearchList", this.searchParams);
     },
+    //删除分类名字 每次记得清空query
+    removeCategoryName() {
+      // console.log(this.$route); //携带query和params
+      // console.log(this.$router);
+      this.searchParams.categoryName = "";
+      this.getdata();
+      //即使为空''，请求依旧会携带空字符串，设置为undefined，则不会携带过去
+      // this.searchParams.category1Id = '';
+      // this.searchParams.category2Id = '';
+      // this.searchParams.category3Id = '';
+      this.searchParams.category1Id = undefined;
+      this.searchParams.category2Id = undefined;
+      this.searchParams.category3Id = undefined;
+      if (this.$route.params) {
+        this.$router.push({ name: "search", params: this.$route.params });
+      }
+    },
+    //删除关键字
+    removeKeyword() {
+      this.searchParams.keyword = undefined;
+      this.getdata();
+      this.$bus.$emit("clearkeyword");
+      if (this.$route.query) {
+        this.$router.push({ name: "search", query: this.$route.query });
+      }
+    },
+    trademarkInfo(trademark) {
+      this.searchParams.trademark = `${trademark.tmId}:${trademark.tmName}`;
+      this.getdata();
+    },
+    //移除品牌标签
+    removetrademark() {
+      this.searchParams.trademark = undefined;
+      this.getdata();
+    },
+    //组合标签属性获取
+    attrInfo(attr, attrvalue) {
+      let props = `${attr.attrId}:${attrvalue}:${attr.attrName}`;
+      //去重，不然一直往里加 ,等于-1表示不重复
+      if(this.searchParams.props.indexOf(props) == -1 ){
+        this.searchParams.props.push(props);
+      }
+      console.log(this.searchParams)
+      this.getdata();
+    },
+    //删除标签属性
+    removeprops(index){
+      this.searchParams.props.splice(index,1);
+      this.getdata();
+    }
   },
   computed: {
     //mapGetters传递的是数组
     ...mapGetters(["goodsList"]),
   },
-  watch:{
-    $route(newValue,oldValue){
-      Object.assign(this.searchParams,this.$route.query,this.$route.params);
+  watch: {
+    $route(newValue, oldValue) {
+      Object.assign(this.searchParams, this.$route.query, this.$route.params);
       this.getdata();
-      this.searchParams.category1Id = '';
-      this.searchParams.category2Id = '';
-      this.searchParams.category3Id = '';
-    }
-  }
+      this.searchParams.category1Id = "";
+      this.searchParams.category2Id = "";
+      this.searchParams.category3Id = "";
+    },
+  },
 };
 </script>
 
