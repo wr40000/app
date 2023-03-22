@@ -64,6 +64,7 @@ export default {
     };
   },
   mounted() {
+    //用于响应在search组件中清除keyword标签后，刷新页面，keyword仍然残留的问题
     this.$bus.$on('clearkeyword',()=>{
       this.keyword = "";
     })

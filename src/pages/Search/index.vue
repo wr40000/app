@@ -36,23 +36,13 @@
           <div class="sui-navbar">
             <div class="navbar-inner filter">
               <ul class="sui-nav">
-                <li class="active">
-                  <a href="#">综合</a>
+                <!--indexOf 如果不存在，则返回 -1 -->
+                <li :class="{active: isone}">
+                  <a href="#">价格<span v-show="isone" class="iconfont" :class="{'icon-up':isAsc,'icon-up-copy':isDesc}"></span></a>
+
                 </li>
-                <li>
-                  <a href="#">销量</a>
-                </li>
-                <li>
-                  <a href="#">新品</a>
-                </li>
-                <li>
-                  <a href="#">评价</a>
-                </li>
-                <li>
-                  <a href="#">价格⬆</a>
-                </li>
-                <li>
-                  <a href="#">价格⬇</a>
+                <li :class="{active: istwo}">
+                  <a href="#">价格<span v-show="istwo" class="iconfont" :class="{'icon-up':isAsc,'icon-up-copy':isDesc}"></span></a>
                 </li>
               </ul>
             </div>
@@ -150,7 +140,8 @@ export default {
         category3Id: "",
         categoryName: "",
         keyword: "",
-        order: "",
+        //初始状态：综合:降序
+        order: "1:desc",
         pageNo: 1,
         pageSize: 10,
         props: [],
@@ -230,6 +221,18 @@ export default {
   computed: {
     //mapGetters传递的是数组
     ...mapGetters(["goodsList"]),
+    isone(){
+      return this.searchParams.order.indexOf('1') != -1
+    },
+    istwo(){
+      return this.searchParams.order.indexOf('2') != -1
+    },
+    isAsc(){
+      return this.searchParams.order.indexOf('asc') != -1;
+    },
+    isDesc(){
+      return this.searchParams.order.indexOf('desc') != -1;
+    }
   },
   watch: {
     $route(newValue, oldValue) {
