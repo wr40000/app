@@ -10,6 +10,7 @@ import Home from '@/pages/Home'
 import Search from '@/pages/Search'
 import Login from '@/pages/Login'
 import Register from '@/pages/Register'
+import Detail from '@/pages/Detail'
 
 //console.log(VueRouter.prototype)
 
@@ -72,10 +73,15 @@ export default new VueRouter({
             component:Login,
             meta:{show:false}
         },
+        {
+            path:"/Detail/:sukid",
+            component:Detail,
+            meta:{show:true}
+        },
         //重定向。页面开始直接定位到首页
         {
-            path:"*",
-            redirect:Home
+            path:'*',
+            redirect:"/home"
         }
     ]
 })
