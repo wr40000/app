@@ -37,11 +37,11 @@
             <div class="navbar-inner filter">
               <ul class="sui-nav">
                 <!--indexOf 如果不存在，则返回 -1 -->
-                <li :class="{active: isone}">
-                  <a href="#">价格<span v-show="isone" class="iconfont" :class="{'icon-up':isAsc,'icon-up-copy':isDesc}"></span></a>
+                <li :class="{active: isone}" @click="changeOrder('1')">
+                  <a href="#">综合<span v-show="isone" class="iconfont" :class="{'icon-up':isAsc,'icon-up-copy':isDesc}"></span></a>
 
                 </li>
-                <li :class="{active: istwo}">
+                <li :class="{active: istwo}" @click="changeOrder('2')">
                   <a href="#">价格<span v-show="istwo" class="iconfont" :class="{'icon-up':isAsc,'icon-up-copy':isDesc}"></span></a>
                 </li>
               </ul>
@@ -92,35 +92,8 @@
               </li>
             </ul>
           </div>
-          <div class="fr page">
-            <div class="sui-pagination clearfix">
-              <ul>
-                <li class="prev disabled">
-                  <a href="#">«上一页</a>
-                </li>
-                <li class="active">
-                  <a href="#">1</a>
-                </li>
-                <li>
-                  <a href="#">2</a>
-                </li>
-                <li>
-                  <a href="#">3</a>
-                </li>
-                <li>
-                  <a href="#">4</a>
-                </li>
-                <li>
-                  <a href="#">5</a>
-                </li>
-                <li class="dotted"><span>...</span></li>
-                <li class="next">
-                  <a href="#">下一页»</a>
-                </li>
-              </ul>
-              <div><span>共10页&nbsp;</span></div>
-            </div>
-          </div>
+          <Pagination :pageNo="searchParams.pageNo" :pageSize="searchParams.pageSize" 
+            :total="total" :continues="3" @getPageNo="getPageNo"/>
         </div>
       </div>
     </div>
@@ -128,7 +101,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapState} from "vuex";
 import SearchSelector from "./SearchSelector/SearchSelector";
 export default {
   name: "Search",
@@ -171,6 +144,7 @@ export default {
     removeCategoryName() {
       // console.log(this.$route); //携带query和params
       // console.log(this.$router);
+      console.log("removeCategoryName被调用了");
       this.searchParams.categoryName = "";
       this.getdata();
       //即使为空''，请求依旧会携带空字符串，设置为undefined，则不会携带过去
@@ -192,18 +166,22 @@ export default {
       if (this.$route.query) {
         this.$router.push({ name: "search", query: this.$route.query });
       }
+      console.log("removeKeyword被调用了");
     },
     trademarkInfo(trademark) {
+      console.log("trademarkInfo被调用了");
       this.searchParams.trademark = `${trademark.tmId}:${trademark.tmName}`;
       this.getdata();
     },
     //移除品牌标签
     removetrademark() {
+      console.log("removetrademark被调用了");
       this.searchParams.trademark = undefined;
       this.getdata();
     },
     //组合标签属性获取
     attrInfo(attr, attrvalue) {
+      console.log("attrInfo被调用了");
       let props = `${attr.attrId}:${attrvalue}:${attr.attrName}`;
       //去重，不然一直往里加 ,等于-1表示不重复
       if(this.searchParams.props.indexOf(props) == -1 ){
@@ -214,7 +192,32 @@ export default {
     },
     //删除标签属性
     removeprops(index){
+      console.log("removeprops被调用了");
       this.searchParams.props.splice(index,1);
+      this.getdata();
+    },
+    changeOrder(flag){
+      console.log("changeOrder被调用了");
+      let originOrder = this.searchParams.order
+      // console.log(originOrder)
+      // console.log(flag)
+      let originflag = originOrder.split(":")[0]
+      let originSort = originOrder.split(":")[1]
+      // console.log("originSort: ",originSort)
+      let newOrder = ''
+      if(flag == originflag){
+        newOrder = `${originflag}:${originSort == "desc" ? "asc" : "desc"}`;
+      }else{
+        newOrder = `${flag}:${"desc"}`;
+      }
+      // console.log(newOrder)
+      this.searchParams.order = newOrder;
+      this.getdata();
+      console.log(this.searchParams);
+    },
+    getPageNo(pageno){
+      console.log("自定义事件被触发了，传递当前页数");
+      this.searchParams.pageNo = pageno;
       this.getdata();
     }
   },
@@ -232,7 +235,10 @@ export default {
     },
     isDesc(){
       return this.searchParams.order.indexOf('desc') != -1;
-    }
+    },
+    ...mapState({
+      total:state=>state.search.searchList.total
+    })
   },
   watch: {
     $route(newValue, oldValue) {

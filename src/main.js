@@ -4,9 +4,12 @@ import App from './App.vue'
 import TypeNav from '@/components/TypeNav'
 
 import Carousel from '@/components/Carousel'
+
+import Pagination from "@/components/Pagination/index"
 //第一个参数：全局组件名字，第二个参数：哪一个组件的
 Vue.component(TypeNav.name,TypeNav)
 Vue.component(Carousel.name,Carousel)
+Vue.component(Pagination.name,Pagination)
 Vue.config.productionTip = false
 
 import store from './store/index';
