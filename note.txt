@@ -33,9 +33,12 @@ splice  split
 
 v-if="page >= startNumAndendNum.start" 
 
+path:"/Detail/:sukid",
 
-
-
+{
+    path:'*',
+    redirect:"/home"
+}
 
 
 
