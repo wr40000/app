@@ -152,7 +152,7 @@ export default {
     },
     enterShow() {
       if (this.$route.path != "/home") {
-        this.show = true;
+        this.show = false;
       }
     },
     leaveShow() {

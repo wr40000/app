@@ -23,6 +23,11 @@ import "swiper/css/swiper.css";
 
 import router from '@/router';
 
+
+// import 'view-design/dist/styles/iview.css';
+import ViewUI from 'view-design';
+Vue.use(ViewUI);
+
 /* import the fontawesome core */
 import { library } from '@fortawesome/fontawesome-svg-core'
 
@@ -44,6 +49,7 @@ new Vue({
   beforeCreate(){
     Vue.prototype.$bus = this;
   },
+ 
   //注册路由
   router,
   //注册stroe

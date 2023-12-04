@@ -4,12 +4,18 @@ import Search from '@/pages/Search'
 import Login from '@/pages/Login'
 import Register from '@/pages/Register'
 import Detail from '@/pages/Detail'
+import Terraria from '@/pages/Terraria'
 
 
 export default [
     {
         path:"/home",
         component:Home,
+        meta:{show:true}
+    },
+    {
+        path:"/Terraria",
+        component:Terraria,
         meta:{show:true}
     },
     {

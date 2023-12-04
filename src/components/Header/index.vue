@@ -23,6 +23,9 @@
             <a href="###">关注尚品汇</a>
             <a href="###">合作招商</a>
             <a href="###">商家后台</a>
+            <router-link :to="{
+              path:'/Terraria',
+            }" href="###">Terraria</router-link>
           </div>
         </div>
       </div>
@@ -71,19 +74,19 @@ export default {
   },
   methods: {
     gosearch() {
-      //(1)路由传参
+      // // (1)路由传参
       // this.$router.push('/search/' + this.keyword +
       // "?k=" + this.keyword.toUpperCase())
-      //(2)模板字符串 路由传参  ``用Tab上面的键打出来
+      // // (2)模板字符串 路由传参  ``用Tab上面的键打出来
       // this.$router.push(`search/${this.keyword}?k=${this.keyword.toUpperCase()}`)
-      //面试题：：：解决对于params参数可传可不传时路径异常（search路径丢失）的问题，
+      // // 面试题：：：解决对于params参数可传可不传时路径异常（search路径丢失）的问题，
       // this.$router.push({name:"search",params:{keyword:"" || undefined},query:{k:this.keyword.toUpperCase()}})
-      //面试题------params不可以和path一起使用
+      // // 面试题------params不可以和path一起使用
       // this.$router.push({path:'/search',params:{keyword:this.keyword},
-      // query:{k:this.keyword.toUpperCase()}})
-      //路由可不以传递props参数--------可以，但是只可以传递props参数
-      //(3)对象传参------常用
-      // this.$router.query即使没有也是个{}，可以执行if内的语句
+      //                                   query:{k:this.keyword.toUpperCase()}})
+      // // 路由可不以传递props参数--------可以，但是只可以传递props参数
+      // // (3)对象传参------常用
+      // // this.$router.query即使没有也是个{}，可以执行if内的语句
       if (this.$route.query) {
         //判断是否有query参数，将query参数和params都push过去
         let location = {
