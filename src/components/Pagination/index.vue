@@ -7,7 +7,7 @@
     <button v-if="startNumAndendNum.start > 2">···</button>
 
     <button v-for="(page,index) in startNumAndendNum.end" :key="index" 
-      v-if="page >= startNumAndendNum.start" 
+      v-show="page >= startNumAndendNum.start" 
       @click="$emit('getPageNo',page)"
       :class="{active:pageNo==page}">{{ page }}</button>
 
@@ -28,6 +28,9 @@ export default {
     return {
 
     }
+  },
+  methods: {
+
   },
   computed:{
     totalPage(){
@@ -52,14 +55,11 @@ export default {
         end = totalPage;
         start = totalPage - continues + 1;
       }
-      this.start = start;
-      this.end = end;
-      return this
+      // this.start = start;
+      // this.end = end;
+      return {start, end}
     }
   },
-  methods(){
-
-  }
 };
 </script>
    <style lang="less" scoped>

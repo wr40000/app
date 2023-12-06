@@ -3,7 +3,7 @@
     <div class="sortList clearfix">
       <div class="center">
         <!--banner轮播-->
-        <Carousel :list="bannersList"/>
+        <CarouselCompontent :list="bannersList"/>
       </div>
       <div class="right">
         <div class="news">
@@ -84,7 +84,6 @@ export default {
   name: "ListContainer",
   mounted() {
     this.$store.dispatch("getBannersList");
-  
   },
   computed: {
     ...mapState({

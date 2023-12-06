@@ -3,7 +3,7 @@
     <div class="swiper-wrapper">
       <div
         class="swiper-slide"
-        v-for="(carousel, index) in list"
+        v-for="(carousel) in list"
         :key="carousel.id"
       >
         <img :src="carousel.imgUrl" />
@@ -21,7 +21,7 @@
 <script>
 import Swiper from "swiper";
 export default {
-  name: "Carousel",
+  name: "CarouselCompontent",
   props:['list'],
   watch:{
     list: {

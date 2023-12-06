@@ -130,8 +130,9 @@ export default {
 
       .typeList {
         float: right;
-
+        
         a {
+          color: #4d4a4a;
           padding: 0 10px;
 
           & + a {

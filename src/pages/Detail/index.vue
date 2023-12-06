@@ -692,7 +692,8 @@
           }
 
           .good-suits {
-            height: 170px;
+            // height: 170px;
+            height: 200px;
             padding-top: 10px;
 
             .master {
@@ -727,7 +728,8 @@
 
               .suitsItem {
                 float: left;
-                width: 127px;
+                // width: 127px;
+                width: 150px;
                 padding: 0 20px;
                 text-align: center;
 

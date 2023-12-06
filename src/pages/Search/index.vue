@@ -38,11 +38,13 @@
               <ul class="sui-nav">
                 <!--indexOf 如果不存在，则返回 -1 -->
                 <li :class="{active: isone}" @click="changeOrder('1')">
-                  <a href="#">综合<span v-show="isone" class="iconfont" :class="{'icon-up':isAsc,'icon-up-copy':isDesc}"></span></a>
+                  <a href="#">综合<span v-show="isone" class="iconfont" 
+                    :class="{'icon-up':isAsc,'icon-up-copy':isDesc}"></span></a>
 
                 </li>
                 <li :class="{active: istwo}" @click="changeOrder('2')">
-                  <a href="#">价格<span v-show="istwo" class="iconfont" :class="{'icon-up':isAsc,'icon-up-copy':isDesc}"></span></a>
+                  <a href="#">价格<span v-show="istwo" class="iconfont" 
+                    :class="{'icon-up':isAsc,'icon-up-copy':isDesc}"></span></a>
                 </li>
               </ul>
             </div>
@@ -51,7 +53,7 @@
             <ul class="yui3-g">
               <li
                 class="yui3-u-1-5"
-                v-for="(good, index) in goodsList"
+                v-for="(good) in goodsList"
                 :key="good.id"
               >
                 <div class="list-wrap">
@@ -115,9 +117,9 @@ export default {
         categoryName: "",
         keyword: "",
         //初始状态：综合:降序
-        order: "1:desc",
+        order: "1:desc", //1 综合  asc 升序
         pageNo: 1,
-        pageSize: 10,
+        pageSize: 5,
         props: [],
         trademark: "",
       },
@@ -127,11 +129,6 @@ export default {
     SearchSelector,
   },
   beforeMount() {
-    // this.searchParams.category1Id = this.$route.query.category1Id,
-    // this.searchParams.category2Id = this.$route.query.category2Id,
-    // this.searchParams.category3Id = this.$route.query.category3Id,
-    // this.searchParams.categoryName = this.$route.query.categoryName,
-    // this.searchParams.keyword = this.$route.params.keyword
     Object.assign(this.searchParams, this.$route.query, this.$route.params);
   },
   mounted() {
@@ -143,18 +140,12 @@ export default {
     },
     //删除分类名字 每次记得清空query
     removeCategoryName() {
-      // console.log(this.$route); //携带query和params
-      // console.log(this.$router);
-      console.log("removeCategoryName被调用了");
-      this.searchParams.categoryName = "";
-      this.getdata();
       //即使为空''，请求依旧会携带空字符串，设置为undefined，则不会携带过去
-      // this.searchParams.category1Id = '';
-      // this.searchParams.category2Id = '';
-      // this.searchParams.category3Id = '';
+      this.searchParams.categoryName = undefined;
       this.searchParams.category1Id = undefined;
       this.searchParams.category2Id = undefined;
       this.searchParams.category3Id = undefined;
+      this.getdata();
       if (this.$route.params) {
         this.$router.push({ name: "search", params: this.$route.params });
       }
@@ -167,28 +158,23 @@ export default {
       if (this.$route.query) {
         this.$router.push({ name: "search", query: this.$route.query });
       }
-      console.log("removeKeyword被调用了");
     },
     trademarkInfo(trademark) {
-      console.log("trademarkInfo被调用了");
       this.searchParams.trademark = `${trademark.tmId}:${trademark.tmName}`;
       this.getdata();
     },
     //移除品牌标签
     removetrademark() {
-      console.log("removetrademark被调用了");
       this.searchParams.trademark = undefined;
       this.getdata();
     },
     //组合标签属性获取
     attrInfo(attr, attrvalue) {
-      console.log("attrInfo被调用了");
       let props = `${attr.attrId}:${attrvalue}:${attr.attrName}`;
       //去重，不然一直往里加 ,等于-1表示不重复
       if(this.searchParams.props.indexOf(props) == -1 ){
         this.searchParams.props.push(props);
       }
-      console.log(this.searchParams)
       this.getdata();
     },
     //删除标签属性
@@ -198,13 +184,9 @@ export default {
       this.getdata();
     },
     changeOrder(flag){
-      console.log("changeOrder被调用了");
       let originOrder = this.searchParams.order
-      // console.log(originOrder)
-      // console.log(flag)
       let originflag = originOrder.split(":")[0]
       let originSort = originOrder.split(":")[1]
-      // console.log("originSort: ",originSort)
       let newOrder = ''
       if(flag == originflag){
         newOrder = `${originflag}:${originSort == "desc" ? "asc" : "desc"}`;
@@ -217,7 +199,6 @@ export default {
       console.log(this.searchParams);
     },
     getPageNo(pageno){
-      console.log("自定义事件被触发了，传递当前页数");
       this.searchParams.pageNo = pageno;
       this.getdata();
     }

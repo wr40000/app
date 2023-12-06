@@ -6,7 +6,7 @@
     <Recommend/>
     <Rank/>
     <Like/>
-    <Floor v-for="(floor,index) in floorsList" :key="floor.id" :list="floor"/>
+    <Floor v-for="(floor) in floorsList" :key="floor.id" :list="floor"/>
     <Brand/>
   </div>
 </template>
@@ -20,7 +20,7 @@ import Floor from '@/pages/Home/Floor/index.vue'
 import Brand from '@/pages/Home/Brand/index.vue'
 import { mapState } from "vuex";
 export default {
-  name:'',
+  name:'HomeCompontent',
   components:{
     ListContainer,Recommend,Rank,Like,Floor,Brand
   },

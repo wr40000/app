@@ -31,12 +31,13 @@
                 >
                   <div
                     class="subitem"
-                    v-for="(c2, index) in c1.categoryChild"
+                    v-for="(c2) in c1.categoryChild"
                     :key="c2.categoryId"
                   >
                     <dl class="fore">
                       <dt>
                         <a
+                          style="color: #333"
                           href="javascript:"
                           :data-categoryName="c2.categoryName"
                           :data-category2Id="c2.categoryId"
@@ -46,11 +47,12 @@
                       </dt>
                       <dd>
                         <em
-                          v-for="(c3, index) in c2.categoryChild"
+                          v-for="(c3) in c2.categoryChild"
                           :key="c3.categoryId"
                         >
                           <a
                             href="javascript:"
+                            style="color: #333"
                             :data-categoryName="c3.categoryName"
                             :data-category3Id="c3.categoryId"
                             >{{ c3.categoryName }}</a
@@ -84,7 +86,7 @@
 //计算属性简写
 import { mapState } from "vuex";
 //按需引入  因为是默认暴露，所以不予要加上{throttle}
-import throttle from "lodash";
+import throttle from "lodash/throttle.js";
 export default {
   name: "TypeNav",
   data() {
@@ -104,25 +106,17 @@ export default {
   computed: {
     ...mapState({
       categoryList: (state) => {
-        // console.log(state.home.categoryList);
-        // console.log(state);
         return state.home.categoryList;
       },
     }),
   },
   methods: {
-    // changeIndex(index) {
-    //   console.log(index);
-    //   this.currentIndex = index;
-    // },
-    changeIndex: _.throttle(function (index) {
+    changeIndex: throttle(function (index) {
       this.currentIndex = index;
     }, 50),
     goSearch(event) {
       const { categoryname, category1id, category2id, category3id } =
         event.target.dataset;
-      // console.log(event.target.dataset);
-      // console.log(categoryname);
 
       if (categoryname) {
         // console.log(categoryname);
@@ -136,7 +130,7 @@ export default {
         } else if (category3id) {
           query.category3Id = category3id;
         }
-      };
+      }
       //判断是否有params参数，将query参数和params都push过去
       if(this.$route.params){
         location.params = this.$route.params;
@@ -152,7 +146,7 @@ export default {
     },
     enterShow() {
       if (this.$route.path != "/home") {
-        this.show = false;
+        this.show = true;
       }
     },
     leaveShow() {
@@ -218,7 +212,7 @@ export default {
             margin: 0;
 
             a {
-              color: #333;
+              color: #333 !important;
             }
           }
 
