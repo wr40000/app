@@ -193,10 +193,8 @@ export default {
       }else{
         newOrder = `${flag}:${"desc"}`;
       }
-      // console.log(newOrder)
       this.searchParams.order = newOrder;
       this.getdata();
-      console.log(this.searchParams);
     },
     getPageNo(pageno){
       this.searchParams.pageNo = pageno;
