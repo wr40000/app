@@ -8,12 +8,14 @@ import search from './search';
 import terraria from './terraria';
 import detail from './detail';
 import shopcart from './shopcart';
+import user from './user';
 export default new Vuex.Store({
     modules:{
         home,
         search,
         terraria,
         detail,
-        shopcart
+        shopcart,
+        user
     }
 })

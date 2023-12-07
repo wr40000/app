@@ -6,26 +6,35 @@
         <div class="container">
           <div class="loginList">
             <p>尚品汇欢迎您！</p>
-            <p>
+            <p v-if="!userName">
               <span>请</span>
               <router-link to="/login">登录</router-link>
               <router-link class="register" to="/register"
                 >免费注册</router-link
               >
             </p>
+            <p v-if="userName">
+              <span>{{ userName }}</span>
+              <a class="register" to="/login" @click="logout"
+                >退出登录</a>
+            </p>
           </div>
           <div class="typeList">
             <a href="###">我的订单</a>
-            <a href="###">我的购物车</a>
+            <router-link to="/shopcart">去购物车结算</router-link>
             <a href="###">我的尚品汇</a>
             <a href="###">尚品汇会员</a>
             <a href="###">企业采购</a>
             <a href="###">关注尚品汇</a>
             <a href="###">合作招商</a>
             <a href="###">商家后台</a>
-            <router-link :to="{
-              path:'/Terraria',
-            }" href="###">Terraria</router-link>
+            <router-link
+              :to="{
+                path: '/Terraria',
+              }"
+              href="###"
+              >Terraria</router-link
+            >
           </div>
         </div>
       </div>
@@ -68,9 +77,9 @@ export default {
   },
   mounted() {
     //用于响应在search组件中清除keyword标签后，刷新页面，keyword仍然残留的问题
-    this.$bus.$on('clearkeyword',()=>{
+    this.$bus.$on("clearkeyword", () => {
       this.keyword = "";
-    })
+    });
   },
   methods: {
     gosearch() {
@@ -96,6 +105,22 @@ export default {
         location.query = this.$route.query;
         this.$router.push(location);
       }
+    },
+    async logout() {
+      //退出登录需要做的事情
+      //1:需要发请求，通知服务器退出登录【清除一些数据：token】
+      //2:清除项目当中的数据【userInfo、token】
+      try {
+        await this.$store.dispatch("userLogout")
+        this.$router.push('/home')
+      } catch (error) {
+        alert(error.message)
+      }
+    },
+  },
+  computed: {
+    userName() {
+      return this.$store.state.user.userInfo.name;
     },
   },
 };
@@ -130,7 +155,7 @@ export default {
 
       .typeList {
         float: right;
-        
+
         a {
           color: #4d4a4a;
           padding: 0 10px;

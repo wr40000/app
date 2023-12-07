@@ -118,7 +118,3 @@ import { mapState } from 'vuex';
 <style scoped>
   @import "view-design/dist/styles/iview.css"
 </style>
-
-<!-- <style src="view-design/dist/styles/iview.css" scoped>
-</style>  -->
-
