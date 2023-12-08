@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import App from './App.vue'
+import * as API from '@/api'
 //注册三级联动--全局组件 在入口文件注册过后，在任何组件中都可以使用
 import TypeNav from '@/components/TypeNav'
 import Carousel from '@/components/Carousel'
@@ -8,6 +9,19 @@ import Pagination from "@/components/Pagination/index"
 Vue.component(TypeNav.name,TypeNav)
 Vue.component(Carousel.name,Carousel)
 Vue.component(Pagination.name,Pagination)
+
+// 注册Element-UI组件
+import { Button, MessageBox } from 'element-ui';
+Vue.component(Button.name, Button)
+Vue.prototype.$msgbox = MessageBox
+Vue.prototype.$alert = MessageBox.alert
+
+// 懒加载插件
+import cat from '@/assets/cat.gif';
+import VueLazyload from 'vue-lazyload';
+Vue.use(VueLazyload, {
+    loading: cat
+})
 
 import store from './store/index';
 import router from '@/router';
@@ -39,6 +53,7 @@ new Vue({
   render: h => h(App),
   beforeCreate(){
     Vue.prototype.$bus = this;
+    Vue.prototype.$API = API;
   },
  
   //注册路由
@@ -46,3 +61,4 @@ new Vue({
   //注册stroe
   store
 }).$mount('#app')
+

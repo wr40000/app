@@ -60,7 +60,7 @@
                   <div class="p-img">
                     <!-- 声明式导航 to前面有:是应为是动态的-->
                     <router-link :to="`/Detail/${good.id}`">
-                      <img :src="good.defaultImg"/>
+                      <img v-lazy="good.defaultImg"/>
                     </router-link>
                   </div>
                   <div class="price">

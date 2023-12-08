@@ -9,6 +9,7 @@ import terraria from './terraria';
 import detail from './detail';
 import shopcart from './shopcart';
 import user from './user';
+import trade from './trade';
 export default new Vuex.Store({
     modules:{
         home,
@@ -16,6 +17,7 @@ export default new Vuex.Store({
         terraria,
         detail,
         shopcart,
-        user
+        user,
+        trade
     }
 })

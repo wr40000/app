@@ -7,9 +7,61 @@ import Detail from '@/pages/Detail'
 import Terraria from '@/pages/Terraria'
 import AddCartSuccess from '@/pages/AddCartSuccess'
 import ShopCart from '@/pages/ShopCart'
+import Trade from '@/pages/Trade'
+import Pay from '@/pages/Pay'
+import PaySuccess from '@/pages/PaySuccess'
+import Center from '@/pages/Center'
+import Grouporder from '@/pages/Center/groupOrder'
+import Myorder from '@/pages/Center/myOrder'
 
 
 export default [
+    {
+        path:"/center",
+        component:Center,
+        meta:{show:true},
+        children: [
+            {
+                path:"grouporder",
+                component:Grouporder,
+                meta:{show:true},
+            },
+            {
+                path:"myorder",
+                component:Myorder,
+                meta:{show:true},
+            },
+            {
+                path:"",
+                redirect: 'myorder'
+            },
+        ]
+    },
+    {
+        path:"/paysuccess",
+        name:"paysuccess",
+        component:PaySuccess,
+        meta:{show:true},
+        beforeEnter(to, from, next){
+            if(from.path !== '/pay'){
+                next('/pay')
+            }else{
+                next()
+            }
+        }
+    },
+    {
+        path:"/pay",
+        name:"pay",
+        component:Pay,
+        meta:{show:true}
+    },
+    {
+        path:"/trade",
+        name:"trade",
+        component:Trade,
+        meta:{show:true}
+    },
     {
         path:"/shopcart",
         name:"shopcart",
