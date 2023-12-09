@@ -132,6 +132,7 @@ export default {
     Object.assign(this.searchParams, this.$route.query, this.$route.params);
   },
   mounted() {
+    console.log(this);
     this.getdata();
   },
   methods: {

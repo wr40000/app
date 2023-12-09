@@ -100,7 +100,7 @@ export default {
     return {
       payInfo: "",
       timer: "",
-      code: ''
+      code: "",
     };
   },
   mounted() {
@@ -141,26 +141,37 @@ export default {
           //你需要知道支付成功|失败
           //支付成功，路由的跳转，如果支付失败，提示信息
           //定时器没有，开启一个新的定时器
-          if (!this.timer) {
-            this.timer = setInterval(async () => {
-              //发请求获取用户支付状态
-              let result = await this.$API.reqPayStatus(this.orderId);
-              // if(result.code == 200){
-                this.code = result.code
-                clearInterval(this.timer);
-                this.timer = null;
-                this.$msgbox.close();
-                this.$router.push('/paysuccess')
-              // }
-            }, 20);
+          if (type === "confirm") {
+            // if (this.code == 200) {
+            clearInterval(this.timer);
+            this.timer = null;
+            done();
+            this.$router.push("/paysuccess");
+            // }
+          } else {
+            alert("没有支付成功捏");
           }
         },
       });
+      if (!this.timer) {
+        this.timer = setInterval(async () => {
+          //发请求获取用户支付状态
+          let result = await this.$API.reqPayStatus(this.orderId);
+          console.log(result.code);
+          if (result.code == 200) {
+            this.code = result.code;
+            clearInterval(this.timer);
+            this.timer = null;
+            this.$msgbox.close();
+            this.$router.push("/paysuccess");
+          }
+        }, 500);
+      }
     },
   },
-  beforeDestroy(){
-    clearInterval(this.timer)
-  }
+  beforeDestroy() {
+    clearInterval(this.timer);
+  },
 };
 </script>
 

@@ -22,9 +22,13 @@ import VueLazyload from 'vue-lazyload';
 Vue.use(VueLazyload, {
     loading: cat
 })
-
-import store from './store/index';
-import router from '@/router';
+// 自定义插件--练习代码
+import myPlugins from './plugins/myPlugins'
+Vue.use(myPlugins, {
+  name: "upper"
+})
+//引入表单校验插件
+import "@/plugins/validate";
 
 //引入MockServer.js  ----mock数据
 import '@/mock/mockServer'
@@ -35,6 +39,7 @@ import "swiper/css/swiper.css";
 import ViewUI from 'view-design';
 Vue.use(ViewUI);
 
+// 引入font-awesome
 import 'font-awesome/css/font-awesome.min.css';
 /* import the fontawesome core */
 import { library } from '@fortawesome/fontawesome-svg-core'
@@ -49,13 +54,14 @@ library.add(fas)
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 Vue.config.productionTip = false
+import store from './store/index';
+import router from '@/router';
 new Vue({
   render: h => h(App),
   beforeCreate(){
     Vue.prototype.$bus = this;
     Vue.prototype.$API = API;
   },
- 
   //注册路由
   router,
   //注册stroe
